@@ -1,0 +1,376 @@
+    /* =========================================================
+       ✨ CHECK ANSWERS — Premium jonli dizayn
+       ========================================================= */
+
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    /* =========================================================
+       💎 TEST INFO CARD — Vibrant premium
+       ========================================================= */
+    .test-info-card {
+        max-width: 640px;
+        margin: 1rem auto 1.5rem;
+        padding: 1.35rem 1.5rem !important;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        animation: fadeInUp 0.5s var(--ease-out);
+        position: relative;
+        overflow: visible;
+        background:
+            linear-gradient(135deg,
+                rgba(99, 102, 241, 0.08),
+                rgba(139, 92, 246, 0.05),
+                rgba(236, 72, 153, 0.03)) !important;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        box-shadow:
+            var(--shadow-md),
+            0 0 60px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Test icon — kuchli glow */
+    .test-info-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+        border-radius: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.65rem;
+        flex-shrink: 0;
+        box-shadow:
+            0 10px 25px rgba(99, 102, 241, 0.5),
+            0 0 30px rgba(236, 72, 153, 0.25),
+            inset 0 2px 0 rgba(255, 255, 255, 0.3);
+        position: relative;
+    }
+
+    .test-info-icon::before {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+        opacity: 0.35;
+        filter: blur(18px);
+        z-index: -1;
+        animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+        0%, 100% { opacity: 0.35; }
+        50%      { opacity: 0.55; }
+    }
+
+    .test-info-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+    }
+
+    .test-info-label {
+        color: var(--text-secondary);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    /* Test kodi — gradient text */
+    .test-info-code {
+        background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+        font-size: 1.35rem;
+        font-family: 'JetBrains Mono', 'SF Mono', monospace;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.2;
+        animation: gradientFlow 4s linear infinite;
+    }
+
+    /* Subject badge */
+    .test-subject-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: var(--radius-full);
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: white !important;
+        -webkit-text-fill-color: white;
+        margin-top: 6px;
+        width: fit-content;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .test-subject-badge.history { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .test-subject-badge.uzbek   { background: linear-gradient(135deg, #10b981, #059669); }
+    .test-subject-badge.russian { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+
+    /* Progress ring wrapper */
+    .test-info-progress {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.1));
+    }
+
+    /* =========================================================
+       💬 HELPER BANNER — Vibrant
+       ========================================================= */
+    .helper-banner {
+        max-width: 640px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: linear-gradient(135deg,
+            rgba(99, 102, 241, 0.12),
+            rgba(139, 92, 246, 0.08),
+            rgba(236, 72, 153, 0.04));
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: var(--radius-lg);
+        color: var(--brand-700);
+        font-size: 0.88rem;
+        font-weight: 600;
+        line-height: 1.4;
+        box-shadow:
+            0 4px 20px rgba(99, 102, 241, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .helper-banner::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #6366f1, #a855f7, #ec4899);
+    }
+
+    .helper-banner i {
+        color: var(--brand-500);
+        font-size: 1.25rem;
+        flex-shrink: 0;
+        filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
+    }
+
+    /* =========================================================
+       📋 JADVAL — Yorqin
+       ========================================================= */
+    .table-responsive {
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg), 0 0 40px rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .col-n, table td:first-child {
+        color: var(--brand-500);
+        font-weight: 800;
+    }
+
+    /* =========================================================
+       💾 SAVE BUTTON
+       ========================================================= */
+    #save-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 16px 44px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        min-width: 220px;
+    }
+
+    #save-btn i { font-size: 1.2rem; }
+
+    /* =========================================================
+       ✨ COMING SOON (Rus tili)
+       ========================================================= */
+    .coming-soon-notice {
+        max-width: 480px;
+        margin: 3rem auto;
+        text-align: center;
+        padding: 3rem 2rem !important;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(37, 99, 235, 0.04)) !important;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .coming-soon-notice .icon {
+        font-size: 4.5rem;
+        margin-bottom: 1rem;
+        animation: floatIcon 3s ease-in-out infinite;
+        filter: drop-shadow(0 8px 16px rgba(59, 130, 246, 0.3));
+    }
+
+    @keyframes floatIcon {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-10px); }
+    }
+
+    .coming-soon-notice h5 {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+        font-size: 1.5rem;
+    }
+
+    /* =========================================================
+       🎨 DARK MODE — Yanada VIBRANT (jonli)
+       ========================================================= */
+    @media (prefers-color-scheme: dark) {
+        /* Body fon — nozik purple/pink glow yuqoridan */
+        body {
+            background:
+                radial-gradient(ellipse 90% 60% at 50% 0%,
+                    rgba(139, 92, 246, 0.2) 0%,
+                    transparent 55%),
+                radial-gradient(ellipse 60% 40% at 100% 50%,
+                    rgba(236, 72, 153, 0.15) 0%,
+                    transparent 60%),
+                var(--bg-page);
+        }
+
+        /* Test info card — kuchli gradient fon */
+        .test-info-card {
+            background:
+                linear-gradient(135deg,
+                    rgba(139, 92, 246, 0.22),
+                    rgba(99, 102, 241, 0.15),
+                    rgba(236, 72, 153, 0.1)) !important;
+            border-color: rgba(139, 92, 246, 0.45);
+            box-shadow:
+                var(--shadow-lg),
+                0 0 60px rgba(139, 92, 246, 0.3),
+                0 0 30px rgba(236, 72, 153, 0.15);
+        }
+
+        .test-info-label {
+            color: #e0e7ff;
+        }
+
+        .test-info-code {
+            background: linear-gradient(90deg, #c7d2fe, #e9d5ff, #fbcfe8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Helper banner — dark mode */
+        .helper-banner {
+            background: linear-gradient(135deg,
+                rgba(139, 92, 246, 0.28),
+                rgba(99, 102, 241, 0.2),
+                rgba(236, 72, 153, 0.12));
+            color: #f0f4ff;
+            border-color: rgba(139, 92, 246, 0.55);
+            box-shadow:
+                0 4px 20px rgba(139, 92, 246, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .helper-banner i {
+            color: #c7d2fe;
+            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+        }
+
+        /* Table wrapper — kuchli glow */
+        .table-responsive {
+            box-shadow:
+                var(--shadow-lg),
+                0 0 60px rgba(139, 92, 246, 0.3),
+                0 0 30px rgba(236, 72, 153, 0.15);
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+
+        /* Coming soon */
+        .coming-soon-notice {
+            background: linear-gradient(135deg,
+                rgba(59, 130, 246, 0.2),
+                rgba(37, 99, 235, 0.12)) !important;
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 60px rgba(59, 130, 246, 0.2);
+        }
+
+        .coming-soon-notice h5 {
+            background: linear-gradient(90deg, #93c5fd, #bfdbfe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .coming-soon-notice .text-secondary {
+            color: #cbd5e1 !important;
+        }
+    }
+
+    /* =========================================================
+       📱 MOBILE
+       ========================================================= */
+    @media (max-width: 480px) {
+        .test-info-card {
+            padding: 1.1rem 1.15rem !important;
+            gap: 14px;
+        }
+        .test-info-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 1.4rem;
+            border-radius: 14px;
+        }
+        .test-info-code { font-size: 1.15rem; }
+        .test-info-label { font-size: 0.68rem; }
+
+        .helper-banner {
+            padding: 12px 14px;
+            font-size: 0.82rem;
+            gap: 10px;
+        }
+
+        #save-btn {
+            padding: 14px 32px;
+            min-width: 200px;
+            font-size: 1rem;
+        }
+
+        .container {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+    }
+
+    /* =========================================================
+       🎯 ANIMATSIYALAR
+       ========================================================= */
+    .helper-banner   { animation: fadeInUp 0.5s var(--ease-out) 0.1s backwards; }
+    .table-responsive { animation: fadeInUp 0.5s var(--ease-out) 0.2s backwards; }
+    #save-btn        { animation: fadeInUp 0.5s var(--ease-out) 0.3s backwards; }

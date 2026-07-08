@@ -1,0 +1,54 @@
+/* =========================================================
+   📌 EDIT-TEST'ga tegishli qo'shimcha stillar
+   add_test.css oxiriga qo'shing
+   ========================================================= */
+
+/* Subject badge holder — edit page'da tanlangan test fani */
+.subject-badge-holder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 40px;
+}
+
+.subject-badge-holder:empty::before {
+    content: '—';
+    color: var(--text-tertiary);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* Type legacy badge — eski format testlar uchun */
+.subject-badge.type-legacy {
+    background: linear-gradient(135deg, #64748b, #475569) !important;
+}
+
+/* Save tugmasi disabled holatda ham chiroyli */
+#save-btn:disabled {
+    background: linear-gradient(135deg, #94a3b8, #64748b) !important;
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.2) !important;
+    animation: none !important;
+    cursor: not-allowed;
+}
+
+#save-btn:disabled:hover {
+    transform: none !important;
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.2) !important;
+}
+
+/* Test kodi readonly holatda — nozik farq */
+#test-code[readonly] {
+    background: linear-gradient(135deg, rgba(148, 163, 184, 0.08), rgba(100, 116, 139, 0.05)) !important;
+    color: var(--text-secondary) !important;
+    -webkit-text-fill-color: var(--text-secondary);
+    cursor: default;
+}
+
+@media (prefers-color-scheme: dark) {
+    #test-code[readonly] {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.5), rgba(15, 23, 42, 0.5)) !important;
+        color: #cbd5e1 !important;
+        -webkit-text-fill-color: #cbd5e1;
+    }
+}

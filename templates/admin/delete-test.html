@@ -1,0 +1,115 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+
+{% block title %}Test o'chirish{% endblock %}
+{% block top_title %}🗑️ Test o'chirish{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/add-test.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin/delete-test.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Hero -->
+    <div class="delete-hero fade-in-up">
+        <div class="danger-icon">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h5>Testni o'chirish</h5>
+        <p class="subtitle">Diqqat! Bu amalni qaytarib bo'lmaydi</p>
+    </div>
+
+    <!-- Form kartochkasi -->
+    <div class="glass-card delete-form-card fade-in-up" style="animation-delay: 0.1s;">
+        {% if tests %}
+        <form method="post" id="deleteForm">
+            {% csrf_token %}
+
+            <!-- Qidirish -->
+            <div class="mb-3">
+                <label for="testSearch" class="form-label">
+                    <i class="bi bi-search"></i> Qidirish
+                </label>
+                <input
+                        type="text"
+                        id="testSearch"
+                        class="form-control"
+                        placeholder="Test kodini yozing..."
+                        autocomplete="off">
+            </div>
+
+            <!-- Test tanlash -->
+            <div class="mb-2">
+                <label for="testSelect" class="form-label">
+                    <i class="bi bi-list-ul"></i> Testni tanlang
+                </label>
+                <select name="test_id" id="testSelect" class="form-select" required>
+                    <option value="" selected disabled>— Testni tanlang —</option>
+                    {% for test in tests %}
+                    <option value="{{ test.id }}">{{ test.test_code }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Test soni -->
+            <div class="text-center mb-2">
+                <span class="test-count">
+                    <i class="bi bi-database"></i> Jami: {{ tests|length }} ta test
+                </span>
+            </div>
+
+            <!-- Tanlangan test preview -->
+            <div id="selectedPreview" class="selected-preview">
+                <div class="selected-icon-wrap">
+                    <i class="bi bi-trash-fill"></i>
+                </div>
+                <div class="selected-info">
+                    <span class="selected-info-label">O'chiriladigan test:</span>
+                    <span class="selected-info-value" id="selectedCode">—</span>
+                </div>
+            </div>
+
+            <!-- O'chirish tugmasi -->
+            <div class="text-center">
+                <button type="submit" class="delete-btn" id="deleteBtn" disabled>
+                    <i class="bi bi-trash-fill me-2"></i>
+                    O'chirish
+                </button>
+            </div>
+        </form>
+        {% else %}
+        <!-- Testlar yo'q -->
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h5>Hali testlar yo'q</h5>
+            <p>O'chirish uchun avval test yaratish kerak</p>
+            <a href="{% url 'add-test' %}" class="btn-add-new">
+                <i class="bi bi-plus-circle-fill"></i>
+                Yangi test qo'shish
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Django messages -->
+    {% if messages %}
+    <div id="messages">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} fade-in-up"
+             role="alert">
+            <i class="bi bi-{% if message.tags == 'success' %}check-circle-fill{% elif message.tags == 'error' %}exclamation-triangle-fill{% elif message.tags == 'warning' %}exclamation-circle-fill{% else %}info-circle-fill{% endif %}"></i>
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+
+<script type="module" src="{% static 'js/delete-test.js' %}?v={{ APP_VERSION }}"></script>
+
+{% endblock %}

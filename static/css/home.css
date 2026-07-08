@@ -1,0 +1,448 @@
+/* =========================================================
+   🏠 HOME — Vibrant premium landing
+   ========================================================= */
+
+body { min-height: 100vh; }
+
+.home-wrapper {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+/* Sahifa fonida qo'shimcha glow (dark mode uchun kuchli) */
+.home-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 60% 50% at 50% 30%,
+            rgba(139, 92, 246, 0.15) 0%,
+            transparent 60%);
+}
+
+/* --- Asosiy kartochka --- */
+.home-card {
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+    padding: 2.5rem 2rem !important;
+    animation: fadeInUp 0.7s var(--ease-out);
+    position: relative;
+    background: linear-gradient(135deg,
+        rgba(99, 102, 241, 0.06),
+        rgba(139, 92, 246, 0.04),
+        rgba(236, 72, 153, 0.03)) !important;
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    box-shadow:
+        var(--shadow-lg),
+        0 0 80px rgba(99, 102, 241, 0.15),
+        0 0 40px rgba(236, 72, 153, 0.08);
+}
+
+/* Yuqorida rangli chiziq */
+.home-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #6366f1, #a855f7, #ec4899, transparent);
+    border-radius: var(--radius-full);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+/* =========================================================
+   ✨ HOME ICON — Yorqin, jonli
+   ========================================================= */
+.home-icon {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 2rem;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 40%, #ec4899 100%);
+    border-radius: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.6rem;
+    box-shadow:
+        0 20px 45px rgba(99, 102, 241, 0.6),
+        0 0 60px rgba(236, 72, 153, 0.4),
+        inset 0 3px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+    animation: floatIcon 4s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+}
+
+/* Ikonka atrofidagi kuchli aylanuvchi glow */
+.home-icon::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 40px;
+    background: conic-gradient(from 0deg,
+        #6366f1, #a855f7, #ec4899, #f59e0b,
+        #10b981, #06b6d4, #6366f1);
+    opacity: 0.35;
+    filter: blur(20px);
+    z-index: -1;
+    animation: spinBorder 8s linear infinite, pulseIconGlow 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    25%      { transform: translateY(-8px) rotate(-4deg); }
+    75%      { transform: translateY(-4px) rotate(4deg); }
+}
+
+@keyframes spinBorder {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulseIconGlow {
+    0%, 100% { opacity: 0.35; filter: blur(20px); }
+    50%      { opacity: 0.55; filter: blur(28px); }
+}
+
+/* =========================================================
+   📝 SARLAVHA + subtitle
+   ========================================================= */
+.home-title {
+    background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #6366f1);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    font-size: 1.9rem;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.75rem;
+    animation: gradientFlow 5s linear infinite;
+}
+
+.home-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0 0 2.25rem;
+    font-weight: 500;
+    line-height: 1.55;
+}
+
+@media (prefers-color-scheme: dark) {
+    .home-subtitle { color: #cbd5e1; }
+}
+
+/* =========================================================
+   🔑 TEST KODI INPUT — Yorqin
+   ========================================================= */
+.code-input-wrap {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.code-input-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 1.35rem;
+    pointer-events: none;
+    transition: var(--transition-base);
+    z-index: 2;
+}
+
+.code-input-wrap:focus-within .code-input-icon {
+    color: var(--brand-500);
+    transform: translateY(-50%) scale(1.2);
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+}
+
+#test-code {
+    width: 100%;
+    max-width: none;
+    background: var(--surface-solid) !important;
+    border: 2px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.25rem 1.1rem 54px !important;
+    font-weight: 800;
+    color: var(--text-primary) !important;
+    -webkit-text-fill-color: var(--text-primary);
+    font-size: 1.4rem;
+    text-align: center;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    transition: var(--transition-base);
+    box-shadow: var(--shadow-sm);
+}
+
+#test-code::placeholder {
+    color: var(--text-tertiary);
+    font-family: 'Inter', sans-serif;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+}
+
+#test-code:focus {
+    outline: none;
+    border-color: var(--brand-500);
+    box-shadow:
+        0 0 0 4px rgba(99, 102, 241, 0.2),
+        0 0 40px rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
+}
+
+@media (prefers-color-scheme: dark) {
+    #test-code {
+        background: rgba(30, 30, 50, 0.9) !important;
+        color: #f1f5f9 !important;
+        -webkit-text-fill-color: #f1f5f9;
+        border-color: rgba(139, 92, 246, 0.35);
+    }
+    #test-code:focus {
+        box-shadow:
+            0 0 0 4px rgba(139, 92, 246, 0.3),
+            0 8px 30px rgba(139, 92, 246, 0.3);
+    }
+}
+
+/* =========================================================
+   🚀 START BUTTON — Yorqin CTA
+   ========================================================= */
+#start-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+    background-size: 200% auto;
+    border: none;
+    padding: 16px 44px;
+    border-radius: var(--radius-full);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: white;
+    -webkit-text-fill-color: white;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 15px 40px rgba(99, 102, 241, 0.45),
+        0 0 80px rgba(236, 72, 153, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    transition: var(--transition-bounce);
+    animation: gradientFlow 4s linear infinite;
+    width: 100%;
+    max-width: 320px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+#start-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.7s;
+}
+
+#start-btn:not(:disabled):hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow:
+        0 25px 55px rgba(99, 102, 241, 0.55),
+        0 0 100px rgba(236, 72, 153, 0.35);
+}
+
+#start-btn:not(:disabled):hover::before { left: 100%; }
+#start-btn:not(:disabled):active { transform: translateY(-1px) scale(0.98); }
+
+#start-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    animation: none;
+}
+
+#start-btn.loading { color: transparent; pointer-events: none; }
+#start-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 24px; height: 24px;
+    margin: -12px 0 0 -12px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* =========================================================
+   📢 STATUS XABAR
+   ========================================================= */
+#status-msg {
+    margin-top: 1.5rem;
+    font-weight: 700;
+    min-height: 1.5rem;
+    transition: var(--transition-base);
+    font-size: 0.95rem;
+}
+
+#status-msg.text-success,
+#status-msg[data-type="success"] {
+    color: #059669;
+}
+
+#status-msg.text-danger,
+#status-msg[data-type="danger"] {
+    color: #dc2626;
+    animation: shakeError 0.5s ease-out;
+}
+
+#status-msg.text-warning,
+#status-msg[data-type="warning"] {
+    color: #d97706;
+}
+
+html[data-theme="dark"] .test-info-card {
+    background: linear-gradient(135deg,
+        rgba(139, 92, 246, 0.22),
+        rgba(99, 102, 241, 0.15),
+        rgba(236, 72, 153, 0.1)) !important;
+    border-color: rgba(139, 92, 246, 0.45);
+}
+
+html[data-theme="dark"] .helper-banner {
+    color: #e0e7ff;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-8px); }
+    75%      { transform: translateX(8px); }
+}
+
+/* =========================================================
+   📱 MOBILE
+   ========================================================= */
+@media (max-width: 480px) {
+    .home-card { padding: 2.25rem 1.5rem !important; }
+    .home-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2.2rem;
+        border-radius: 24px;
+    }
+    .home-title { font-size: 1.55rem; }
+    #test-code { font-size: 1.2rem; padding-left: 48px !important; }
+    .code-input-icon { left: 15px; font-size: 1.2rem; }
+}
+
+/* =========================================================
+   🔔 PREMIUM TOAST — Status xabarlar
+   ========================================================= */
+#status-msg {
+    margin-top: 1.5rem;
+    min-height: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+#status-msg:empty { display: none; }
+
+/* Toast asosiy stil */
+.toast-msg {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: var(--radius-xl);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+    max-width: 100%;
+    line-height: 1.4;
+    text-align: left;
+    animation: toastIn 0.4s var(--ease-spring) both;
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    color: white !important;
+    -webkit-text-fill-color: white;
+    backdrop-filter: blur(8px);
+}
+
+/* Ikonka konteyneri */
+.toast-msg .toast-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Shimmer effekt (nozik yaltiroq oqim) */
+.toast-msg::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: toastShimmer 2s ease-in-out infinite;
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0)     scale(1); }
+}
+
+@keyframes toastOut {
+    from { opacity: 1; transform: translateY(0)     scale(1); }
+    to   { opacity: 0; transform: translateY(-10px) scale(0.95); }
+}
+
+@keyframes toastShimmer {
+    0%, 100% { left: -100%; }
+    50%      { left: 100%; }
+}
+
+.toast-msg.leaving {
+    animation: toastOut 0.3s var(--ease-smooth) forwards;
+}
+
+/* Variantlar */
+.toast-msg.danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 12px 32px rgba(239, 68, 68, 0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.toast-msg.warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.toast-msg.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.toast-msg.info {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+}

@@ -1,0 +1,142 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+
+{% block title %}Testni to'xtatish{% endblock %}
+{% block top_title %}🟠 Testni to'xtatish{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/add-test.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin/off-test.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Hero -->
+    <div class="action-hero fade-in-up">
+        <div class="action-icon">
+            <i class="bi bi-pause-circle-fill"></i>
+        </div>
+        <h5>Testni to'xtatish</h5>
+        <p class="subtitle">Faol testni to'xtatib, tugash vaqtini yangilang</p>
+    </div>
+
+    <!-- Form kartochkasi -->
+    <div class="glass-card action-form-card fade-in-up" style="animation-delay: 0.1s;">
+
+        {% if tests %}
+        <form method="post" id="actionForm">
+            {% csrf_token %}
+
+            <!-- Qidirish -->
+            <div class="mb-3">
+                <label for="testSearch" class="form-label">
+                    <i class="bi bi-search"></i> Qidirish
+                </label>
+                <input
+                        type="text"
+                        id="testSearch"
+                        class="form-control"
+                        placeholder="Test kodini yozing..."
+                        autocomplete="off">
+            </div>
+
+            <!-- Test tanlash -->
+            <div class="mb-3">
+                <label for="testSelect" class="form-label">
+                    <i class="bi bi-list-ul"></i> Testni tanlang
+                </label>
+                <select name="test_id" id="testSelect" class="form-select" required>
+                    <option value="" selected disabled>— Testni tanlang —</option>
+                    {% for test in tests %}
+                    <option
+                            value="{{ test.id }}"
+                            data-code="{{ test.test_code }}"
+                            data-offtime="{{ test.off_time|date:'Y-m-d\\TH:i' }}"
+                            data-active="{{ test.is_active|yesno:'true,false' }}">
+                        {{ test.test_code }}
+                        {% if test.is_active %}
+                            (yoqilgan)
+                        {% else %}
+                            (o'chirilgan)
+                        {% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Tugash vaqti (auto-fill bilan) -->
+            <div class="mb-3">
+                <label for="endDatetime" class="form-label">
+                    <i class="bi bi-clock-fill"></i> Tugash vaqti
+                </label>
+                <input
+                        id="endDatetime"
+                        type="datetime-local"
+                        name="end_datetime"
+                        class="form-control"
+                        required>
+                <span id="autofillHint" class="autofill-hint">
+                    <i class="bi bi-magic"></i> Test'ning tugash vaqtidan avtomatik olindi
+                </span>
+            </div>
+
+            <!-- Test soni -->
+            <div class="text-center mb-2">
+                <span class="test-count">
+                    <i class="bi bi-database"></i> Jami: {{ tests|length }} ta test
+                </span>
+            </div>
+
+            <!-- Preview -->
+            <div id="selectedPreview" class="selected-preview">
+                <div class="selected-icon-wrap">
+                    <i class="bi bi-pause-circle-fill"></i>
+                </div>
+                <div class="selected-info">
+                    <span class="selected-info-label">To'xtatiladigan test:</span>
+                    <span class="selected-info-value" id="selectedCode">—</span>
+                </div>
+            </div>
+
+            <!-- To'xtatish tugmasi -->
+            <div class="text-center">
+                <button type="submit" class="action-btn" id="actionBtn" disabled>
+                    <i class="bi bi-pause-circle-fill me-2"></i>
+                    Testni to'xtatish
+                </button>
+            </div>
+        </form>
+
+        {% else %}
+        <!-- Empty state -->
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h5>Hali testlar yo'q</h5>
+            <p>To'xtatish uchun avval test yaratish kerak</p>
+            <a href="{% url 'add-test' %}" class="btn-add-new">
+                <i class="bi bi-plus-circle-fill"></i>
+                Yangi test qo'shish
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="messages">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} fade-in-up"
+             role="alert">
+            <i class="bi bi-{% if message.tags == 'success' %}check-circle-fill{% elif message.tags == 'error' %}exclamation-triangle-fill{% elif message.tags == 'warning' %}exclamation-circle-fill{% else %}info-circle-fill{% endif %}"></i>
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module" src="{% static 'js/off-test.js' %}?v={{ APP_VERSION }}"></script>
+{% endblock %}

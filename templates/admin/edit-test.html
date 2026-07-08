@@ -1,0 +1,90 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+
+{% block title %}Testni tahrirlash{% endblock %}
+{% block top_title %}✏️ Testni tahrirlash{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/add-test.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin/edit-test.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Yo'riqnoma -->
+    <div class="text-center mb-4 fade-in-up">
+        <p class="text-secondary mb-0" style="font-size: 0.95rem;">
+            Mavjud testni tanlab, javoblarini o'zgartiring.
+        </p>
+    </div>
+
+    <!-- SVG gradient -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="50%" stop-color="#a855f7"/>
+                <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- Yuqori kartochka: TEST TANLASH + KOD + BADGE + PROGRESS -->
+    <div class="glass-card mb-4 fade-in-up" style="animation-delay: 0.1s;">
+        <div class="row g-3 align-items-end">
+            <!-- Test tanlash -->
+            <div class="col-md-5">
+                <label for="test-select" class="form-label">
+                    <i class="bi bi-list-check"></i> Testni tanlang
+                </label>
+                <select id="test-select" class="form-select">
+                    <option value="">— Testni tanlang —</option>
+                </select>
+            </div>
+
+            <!-- Test kodi (readonly) -->
+            <div class="col-md-3">
+                <label for="test-code" class="form-label">
+                    <i class="bi bi-key-fill"></i> Test kodi
+                </label>
+                <input id="test-code" type="text" class="form-control"
+                       placeholder="—" readonly>
+            </div>
+
+            <!-- Subject badge -->
+            <div class="col-md-2 d-flex justify-content-center align-items-center">
+                <div id="subject-badge" class="subject-badge-holder"></div>
+            </div>
+
+            <!-- Progress ring -->
+            <div class="col-md-2 d-flex justify-content-center">
+                <div class="progress-ring" title="To'ldirilgan savollar">
+                    <svg viewBox="0 0 64 64">
+                        <circle class="bg" cx="32" cy="32" r="28"/>
+                        <circle class="fg" cx="32" cy="32" r="28"/>
+                    </svg>
+                    <span class="label">0/0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dinamik test tarkibi -->
+    <div id="test-container" class="fade-in-up" style="animation-delay: 0.2s;">
+        <!-- test tanlangach shu joyga savollar chiqadi -->
+    </div>
+
+    <!-- Saqlash tugmasi va status -->
+    <div class="text-center">
+        <button id="save-btn" disabled>
+            <i class="bi bi-check-circle-fill me-2"></i>O'zgartirishni saqlash
+        </button>
+        <div id="status"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module" src="{% static 'js/edit_test.js' %}"></script>
+{% endblock %}

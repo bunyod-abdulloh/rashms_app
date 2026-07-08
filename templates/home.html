@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Testni boshlash{% endblock %}
+{% block top_title %}
+<span class="title-icon"><i class="bi bi-puzzle-fill"></i></span>
+<span class="title-text">Testni boshlash</span>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v={{ APP_VERSION }}">
+{% endblock %}
+
+{% block content %}
+<div class="home-wrapper">
+    <div class="glass-card home-card">
+        <!-- Ikonka -->
+<!--        <div class="home-icon">-->
+<!--            <i class="bi bi-puzzle-fill"></i>-->
+<!--        </div>-->
+
+        <!-- Sarlavha -->
+        <h1 class="home-title">Testni boshlash</h1>
+        <p class="home-subtitle">
+            Test kodini kiriting
+        </p>
+
+        <!-- Test kodi input -->
+        <div class="code-input-wrap">
+            <i class="bi bi-key-fill code-input-icon"></i>
+            <input
+                    id="test-code"
+                    type="text"
+                    class="form-control"
+                    placeholder="T1234"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    maxlength="30"
+                    autofocus>
+        </div>
+
+        <!-- Start tugma -->
+        <button id="start-btn" type="button">
+            <i class="bi bi-rocket-takeoff-fill"></i>
+            Boshlash
+        </button>
+
+        <!-- Status xabar -->
+        <p id="status-msg"></p>
+    </div>
+</div>
+
+<script type="module" src="{% static 'js/test-status.js' %}?v={{ APP_VERSION }}"></script>
+
+<script>
+    // Enter tugmasi bilan boshlash
+    const startBtn = document.getElementById('start-btn');
+    const testCodeInp = document.getElementById('test-code');
+
+    testCodeInp?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && testCodeInp.value.trim()) {
+            startBtn?.click();
+        }
+    });
+
+    // Loading state global helper
+    window.setStartBtnLoading = (loading) => {
+        if (loading) {
+            startBtn.classList.add('loading');
+            startBtn.disabled = true;
+        } else {
+            startBtn.classList.remove('loading');
+            startBtn.disabled = false;
+        }
+    };
+
+    // Haptic feedback (Telegram)
+    startBtn?.addEventListener('click', () => {
+        window.tgHaptic?.light?.();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,519 @@
+/* =========================================================
+   🔐 ADMIN LOGIN — Ultra Premium
+   base.css'dan design tokenlarni oladi
+   ========================================================= */
+
+/* --- Login sahifasi uchun body override --- */
+body.login-page {
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    min-height: 100vh;
+}
+
+/* Login sahifasida bottom nav bo'lmaydi, aurora ni cheklaymiz */
+body.login-page::before {
+    animation-duration: 25s;
+}
+
+/* =========================================================
+   📦 LOGIN WRAPPER
+   ========================================================= */
+.login-wrapper {
+    width: 100%;
+    max-width: 440px;
+    animation: fadeInUp 0.7s var(--ease-out);
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================================================
+   💎 LOGIN CARD
+   ========================================================= */
+.login-card {
+    padding: 3rem 2.5rem !important;
+    text-align: center;
+    box-shadow:
+        var(--shadow-2xl),
+        0 0 80px rgba(99, 102, 241, 0.15),
+        0 0 120px rgba(236, 72, 153, 0.08);
+    position: relative;
+    overflow: visible;
+}
+
+/* Yon tomonlarda dekorativ blob */
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    border-radius: inherit;
+    background: var(--gradient-hero);
+    opacity: 0.15;
+    filter: blur(40px);
+    z-index: -1;
+    animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* =========================================================
+   🔒 LOGIN ICON (Yuqoridagi qulf)
+   ========================================================= */
+.login-icon {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 1.75rem;
+    background: var(--gradient-hero);
+    border-radius: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 16px 40px rgba(99, 102, 241, 0.5),
+        0 0 60px rgba(236, 72, 153, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.35),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    color: white;
+    font-size: 2.4rem;
+    animation: floatIcon 4s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+}
+
+/* Ikonka ostidagi glow */
+.login-icon::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 32px;
+    background: var(--gradient-hero);
+    opacity: 0.4;
+    filter: blur(24px);
+    z-index: -1;
+    animation: pulseIconGlow 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-6px) rotate(-3deg); }
+    75% { transform: translateY(-3px) rotate(3deg); }
+}
+
+@keyframes pulseIconGlow {
+    0%, 100% { opacity: 0.4; filter: blur(24px); }
+    50% { opacity: 0.6; filter: blur(32px); }
+}
+
+/* =========================================================
+   ✨ SARLAVHA
+   ========================================================= */
+.login-title {
+    background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    font-size: 1.9rem;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.5rem;
+    animation: gradientFlow 5s linear infinite;
+}
+
+.login-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    margin: 0 0 2rem;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+    .login-subtitle {
+        color: #cbd5e1;
+    }
+}
+
+/* =========================================================
+   📝 FORM
+   ========================================================= */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    text-align: left;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.88rem;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.form-label i {
+    color: var(--brand-500);
+    font-size: 0.95rem;
+}
+
+/* =========================================================
+   🎨 INPUT WRAP (ikonka + toggle bilan)
+   ========================================================= */
+.input-wrap {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 1.15rem;
+    transition: color var(--transition-base), transform var(--transition-base);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.input-wrap:focus-within .input-icon {
+    color: var(--brand-500);
+    transform: translateY(-50%) scale(1.15);
+}
+
+/* Input control — asosiy uslub */
+.form-control.has-icon {
+    background: var(--surface-solid) !important;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0.9rem 1.15rem 0.9rem 46px !important;
+    font-weight: 500;
+    color: var(--text-primary) !important;
+    -webkit-text-fill-color: var(--text-primary);
+    font-size: 1rem;
+    transition: var(--transition-base);
+    width: 100%;
+    box-shadow: var(--shadow-xs);
+    caret-color: var(--brand-500);
+    font-family: 'Inter', sans-serif;
+}
+
+.form-control.has-icon.has-toggle {
+    padding-right: 48px !important;
+}
+
+.form-control.has-icon::placeholder {
+    color: var(--text-tertiary);
+    font-weight: 400;
+    opacity: 1;
+}
+
+.form-control.has-icon:hover:not(:focus) {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-sm);
+}
+
+.form-control.has-icon:focus {
+    outline: none;
+    border-color: var(--brand-500);
+    box-shadow:
+        0 0 0 4px rgba(99, 102, 241, 0.15),
+        0 4px 16px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Autofill fix */
+.form-control:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px var(--surface-solid) inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    caret-color: var(--brand-500);
+}
+
+/* =========================================================
+   👁️ PASSWORD TOGGLE (Ko'rsatish/Yashirish)
+   ========================================================= */
+.password-toggle {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    transition: var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    z-index: 2;
+    padding: 0;
+}
+
+.password-toggle:hover {
+    color: var(--brand-500);
+    background: rgba(99, 102, 241, 0.1);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   🚨 XATO XABAR
+   ========================================================= */
+.login-error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.06));
+    color: #dc2626;
+    border: 1.5px solid rgba(239, 68, 68, 0.3);
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: shakeError 0.5s ease-out;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+}
+
+.login-error i {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+@media (prefers-color-scheme: dark) {
+    .login-error {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(239, 68, 68, 0.15));
+        border-color: rgba(239, 68, 68, 0.5);
+        color: #fca5a5;
+    }
+}
+
+/* =========================================================
+   💾 SUBMIT BUTTON — Kirish
+   ========================================================= */
+.login-submit {
+    background: var(--gradient-hero);
+    background-size: 200% auto;
+    border: none;
+    padding: 15px 28px;
+    border-radius: var(--radius-full);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: white;
+    -webkit-text-fill-color: white;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 12px 32px rgba(99, 102, 241, 0.4),
+        0 0 60px rgba(236, 72, 153, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+    transition: var(--transition-bounce);
+    margin-top: 0.75rem;
+    animation: gradientFlow 4s linear infinite;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-submit .btn-content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: opacity var(--transition-fast);
+}
+
+.login-submit .btn-content i {
+    font-size: 1.1rem;
+}
+
+/* Yaltiroq (shine) */
+.login-submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.7s;
+}
+
+.login-submit:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 20px 48px rgba(99, 102, 241, 0.5),
+        0 0 80px rgba(236, 72, 153, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.login-submit:hover::before {
+    left: 100%;
+}
+
+.login-submit:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+/* Loading holati */
+.login-submit.loading {
+    cursor: wait;
+}
+
+.login-submit.loading .btn-content {
+    opacity: 0;
+}
+
+.login-submit.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.login-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+/* =========================================================
+   🏷️ FOOTER
+   ========================================================= */
+.login-footer {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.badge-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.06));
+    color: var(--brand-600);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+    .badge-mini {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.12));
+        color: #c7d2fe;
+        border-color: rgba(99, 102, 241, 0.3);
+    }
+}
+
+/* Caps Lock warning */
+.caps-warning {
+    display: none;
+    color: var(--warning);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 6px;
+    align-items: center;
+    gap: 4px;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.caps-warning.active {
+    display: inline-flex;
+}
+
+/* =========================================================
+   📱 MOBILE
+   ========================================================= */
+@media (max-width: 480px) {
+    body.login-page { padding: 16px; }
+
+    .login-card { padding: 2.25rem 1.5rem !important; }
+
+    .login-icon {
+        width: 72px;
+        height: 72px;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .login-title { font-size: 1.6rem; }
+    .login-subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control.has-icon {
+        font-size: 0.95rem;
+        padding: 0.85rem 1rem 0.85rem 42px !important;
+    }
+
+    .form-control.has-icon.has-toggle {
+        padding-right: 44px !important;
+    }
+}
+
+/* =========================================================
+   🌙 DARK MODE — inputlar
+   ========================================================= */
+@media (prefers-color-scheme: dark) {
+    .form-control.has-icon {
+        background: rgba(30, 41, 59, 0.85) !important;
+        color: #f1f5f9 !important;
+        -webkit-text-fill-color: #f1f5f9;
+        border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    .form-control:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 100px rgba(30, 41, 59, 1) inset !important;
+        -webkit-text-fill-color: #f1f5f9 !important;
+    }
+}

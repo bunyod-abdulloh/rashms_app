@@ -1,0 +1,133 @@
+{% extends 'admin/main.html' %}
+{% load static %}
+
+{% block title %}Testni yoqish{% endblock %}
+{% block top_title %}🟢 Testni yoqish{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/add-test.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin/on-test.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="action-hero fade-in-up">
+        <div class="action-icon">
+            <i class="bi bi-play-circle-fill"></i>
+        </div>
+        <h5>Testni yoqish</h5>
+        <p class="subtitle">Test'ni faollashtiring va tugash vaqtini belgilang</p>
+    </div>
+
+    <div class="glass-card action-form-card fade-in-up" style="animation-delay: 0.1s;">
+        {% if tests %}
+        <div class="info-banner">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span>Diqqat! Yangi test yoqilganda boshqa faol testlar avtomatik to'xtatiladi.</span>
+        </div>
+
+        <form method="post" id="actionForm">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="testSearch" class="form-label">
+                    <i class="bi bi-search"></i> Qidirish
+                </label>
+                <input
+                        type="text"
+                        id="testSearch"
+                        class="form-control"
+                        placeholder="Test kodini yozing..."
+                        autocomplete="off">
+                <div id="noResults" class="no-results">
+                    <i class="bi bi-emoji-frown"></i> Hech narsa topilmadi
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="testSelect" class="form-label">
+                    <i class="bi bi-list-ul"></i> Testni tanlang
+                </label>
+                <select name="test_id" id="testSelect" class="form-select" required>
+                    <option value="" selected disabled>— Testni tanlang —</option>
+                    {% for test in tests %}
+                    <option
+                            value="{{ test.id }}"
+                            data-code="{{ test.test_code }}"
+                            data-active="{{ test.is_active|yesno:'true,false' }}">
+                        {% if test.is_active %}● {% endif %}{{ test.test_code }}{% if test.is_active %} (hozir
+                        yoqilgan){% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="endDatetime" class="form-label">
+                    <i class="bi bi-clock-fill"></i> Tugash vaqti
+                </label>
+                <input
+                        id="endDatetime"
+                        type="datetime-local"
+                        name="end_datetime"
+                        class="form-control"
+                        required>
+                <small class="text-secondary d-block mt-1" style="font-size: 0.8rem;">
+                    <i class="bi bi-info-circle"></i> Test bu vaqtga yetganda avtomatik to'xtaydi
+                </small>
+            </div>
+
+            <div class="text-center mb-2">
+                <span class="test-count">
+                    <i class="bi bi-database"></i> Jami: {{ tests|length }} ta test
+                </span>
+            </div>
+
+            <div id="selectedPreview" class="selected-preview">
+                <div class="selected-icon-wrap">
+                    <i class="bi bi-play-circle-fill"></i>
+                </div>
+                <div class="selected-info">
+                    <span class="selected-info-label">Yoqiladigan test:</span>
+                    <span class="selected-info-value" id="selectedCode">—</span>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="action-btn" id="actionBtn" disabled>
+                    <i class="bi bi-play-circle-fill me-2"></i>
+                    Testni yoqish
+                </button>
+            </div>
+        </form>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h5>Hali testlar yo'q</h5>
+            <p>Yoqish uchun avval test yaratish kerak</p>
+            <a href="{% url 'add-test' %}" class="btn-add-new">
+                <i class="bi bi-plus-circle-fill"></i>
+                Yangi test qo'shish
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if messages %}
+    <div id="messages">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}info{% endif %} fade-in-up"
+             role="alert">
+            <i class="bi bi-{% if message.tags == 'success' %}check-circle-fill{% elif message.tags == 'error' %}exclamation-triangle-fill{% elif message.tags == 'warning' %}exclamation-circle-fill{% else %}info-circle-fill{% endif %}"></i>
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module" src="{% static 'js/on-test.js' %}?v={{ APP_VERSION }}"></script>
+{% endblock %}

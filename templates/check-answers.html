@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Test yechish{% endblock %}
+{% block top_title %}
+<span class="title-icon"><i class="bi bi-journal-check"></i></span>
+<span class="title-text">Test yechish</span>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/add-test.css' %}?v={{ APP_VERSION }}">
+<link rel="stylesheet" href="{% static 'css/check-answers.css' %}?v={{ APP_VERSION }}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- 🔹 Backenddan kelgan test code -->
+    <input type="hidden" id="test-code" value="{{ test_code }}">
+
+    <!-- 🔹 Backenddan config — SUBJECT va COUNT ni window'ga yozamiz -->
+    <script>
+        window.QUESTION_COUNT = {{ count|default:0 }};
+        window.TEST_SUBJECT   = "{{ subject|default:'' }}";
+    </script>
+
+    <!-- Progress ring uchun SVG gradient -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="50%" stop-color="#a855f7"/>
+                <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    {% if subject == 'russian' %}
+    <!-- Coming soon (Rus tili) -->
+    <div class="glass-card coming-soon-notice">
+        <div class="icon">🇷🇺</div>
+        <h5 class="mb-2">Rus tili</h5>
+        <p class="text-secondary mb-0">Bu fan uchun test tuzilmasi tez orada qo'shiladi.</p>
+    </div>
+    {% else %}
+
+    <!-- Test info card -->
+    <div class="glass-card test-info-card">
+        <!--        <div class="test-info-icon">-->
+        <!--            <i class="bi bi-journal-check"></i>-->
+        <!--        </div>-->
+        <div class="test-info-details">
+            <span class="test-info-label">Test kodi</span>
+            <span class="test-info-code">{{ test_code }}</span>
+
+            {% if subject %}
+            <span class="test-subject-badge {{ subject }}">
+                {% if subject == 'history' %}<i class="bi bi-book-half"></i> Tarix
+                {% elif subject == 'uzbek' %}<i class="bi bi-translate"></i> Ona tili
+                {% elif subject == 'russian' %}<i class="bi bi-globe"></i> Rus tili
+                {% else %}{{ subject }}{% endif %}
+            </span>
+            {% endif %}
+        </div>
+        <div class="test-info-progress">
+            <div class="progress-ring" title="To'ldirilgan savollar">
+                <svg viewBox="0 0 64 64">
+                    <circle class="bg" cx="32" cy="32" r="28"/>
+                    <circle class="fg" cx="32" cy="32" r="28"/>
+                </svg>
+                <span class="label">0/{{ count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Helper banner -->
+    <div class="helper-banner">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>Har savol uchun to'g'ri javob variantini tanlang. Barchasini to'ldirgach yakunlang.</span>
+    </div>
+
+    <!-- Jadval (JS avtomatik to'ldiradi) -->
+    <div class="table-responsive mb-4">
+        <table>
+            <thead>
+            <tr>
+                <th class="col-n">N°</th>
+                <th class="col-letter">A</th>
+                <th class="col-letter">B</th>
+                <th class="col-letter">C</th>
+                <th class="col-letter">D</th>
+                <th class="col-letter">E</th>
+                <th class="col-letter">F</th>
+            </tr>
+            </thead>
+            <tbody id="choices-body"></tbody>
+        </table>
+    </div>
+
+    <!-- Yozma savollar konteyneri (36-45 uchun) -->
+    <div id="questions-container"></div>
+
+    <!-- Save tugmasi -->
+    <div class="text-center">
+        <button id="save-btn">
+            <i class="bi bi-check-circle-fill"></i>
+            Yakunlash
+        </button>
+        <div id="status"></div>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if subject != 'russian' %}
+<script type="module" src="{% static 'js/check-answers.js' %}?v={{ APP_VERSION }}"></script>
+{% endif %}
+{% endblock %}
