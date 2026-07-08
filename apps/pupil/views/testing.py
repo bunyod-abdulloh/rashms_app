@@ -56,14 +56,13 @@ def test_status(request: HttpRequest) -> JsonResponse:
         telegram_id = int(telegram_id)
     except (ValueError, TypeError):
         return JsonResponse(
-            {"status": "error", "message": "telegram_id noto'g'ri format"},
-            status=400,
-        )
+            {"status": "error"}, status=400)
 
     test = TestStatus.objects.filter(test_code=test_code).first()
+
     if not test:
         return JsonResponse(
-            {"status": "error", "message": "Bunday test topilmadi"}, status=404
+            {"status": "error"}, status=404
         )
 
     # Muddati tugagan bo'lsa avtomatik o'chirish
@@ -75,10 +74,9 @@ def test_status(request: HttpRequest) -> JsonResponse:
     if not test.is_active:
         if test.off_time:
             return JsonResponse(
-                {"status": "closed", "message": "Test muddati tugagan"}, status=200
-            )
+                {"status": "closed"}, status=200)
         return JsonResponse(
-            {"status": "not_start", "message": "Test boshlanmadi!"}, status=200
+            {"status": "not_start"}, status=200
         )
 
     # Foydalanuvchi allaqachon ishlaganmi?
@@ -88,13 +86,11 @@ def test_status(request: HttpRequest) -> JsonResponse:
 
     if user_done:
         return JsonResponse(
-            {"status": "done", "message": "Siz bu testni allaqachon ishlagansiz"},
-            status=200,
+            {"status": "done"}, status=200,
         )
 
     return JsonResponse(
-        {"status": "new", "message": "Test ochiq va siz hali ishlamagansiz"},
-        status=200,
+        {"status": "new"}, status=200,
     )
 
 
