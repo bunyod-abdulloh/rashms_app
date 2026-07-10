@@ -9,7 +9,6 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from apps.admin.helpers import is_admin
-from apps.admin.models import AdminProfile
 
 logger = logging.getLogger(__name__)
 
@@ -18,52 +17,64 @@ DEFAULT_REDIRECT_URL_NAME = "add-test"
 
 
 def _safe_next_url(request: HttpRequest, fallback: str) -> str:
-    """'next' parametrini xavfsiz tekshiradi (open redirect'ga qarshi)."""
+    """Open Redirect hujumidan himoya."""
     next_url = request.GET.get("next") or request.POST.get("next")
-    allowed = {request.get_host()}
 
     if next_url and url_has_allowed_host_and_scheme(
             next_url,
-            allowed_hosts=allowed,
+            allowed_hosts={request.get_host()},
             require_https=request.is_secure(),
     ):
         return next_url
+
     return fallback
 
 
 @ensure_csrf_cookie
 @never_cache
 def admin_login(request: HttpRequest) -> HttpResponse:
-    # Allaqachon kirgan bo'lsa — asosiy sahifaga
+    # Login bo'lgan admin qayta login sahifasiga kirmasin
     if request.user.is_authenticated and is_admin(request.user):
         return redirect(reverse(DEFAULT_REDIRECT_URL_NAME))
 
     if request.method == "POST":
-        username = (request.POST.get("username") or "").strip()
-        password = request.POST.get("password") or ""
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
 
         if not username or not password:
             return render(request, LOGIN_TEMPLATE, {
                 "error": "Login va parolni to'liq kiriting."
             })
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(
+            request,
+            username=username,
+            password=password,
+        )
 
-        if user is None or not user.is_staff:
+        if user is None:
             return render(request, LOGIN_TEMPLATE, {
-                "error": "Login yoki parol xato!"
+                "error": "Login yoki parol noto'g'ri."
             })
 
-        if not AdminProfile.objects.filter(user=user).only("id").exists():
+        if not user.is_active:
             return render(request, LOGIN_TEMPLATE, {
-                "error": "Bu foydalanuvchi admin emas."
+                "error": "Foydalanuvchi bloklangan."
+            })
+
+        # Admin huquqini tekshirish
+        if not user.is_staff or user.role != "admin":
+            return render(request, LOGIN_TEMPLATE, {
+                "error": "Sizda admin panelga kirish huquqi yo'q."
             })
 
         django_login(request, user)
-        logger.info("Admin logged in: %s", username)
 
         return redirect(
-            _safe_next_url(request, fallback=reverse(DEFAULT_REDIRECT_URL_NAME))
+            _safe_next_url(
+                request,
+                fallback=reverse(DEFAULT_REDIRECT_URL_NAME),
+            )
         )
 
     return render(request, LOGIN_TEMPLATE)

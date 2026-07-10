@@ -1,14 +1,8 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from django.contrib.auth.models import User
 
 
-class AdminProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    telegram_id = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.user.username}"
 
 
 class TestStatus(models.Model):
@@ -45,3 +39,26 @@ class TestAnswers(models.Model):
     question_number = models.CharField(max_length=10)
     answer_text = models.TextField()
     score = models.FloatField(default=0.0)
+
+
+class User(AbstractUser):
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('teacher', 'Teacher'),
+    ]
+
+    role = models.CharField(
+        max_length=16,
+        choices=ROLE_CHOICES,
+        default='admin',
+    )
+
+    telegram_id = models.BigIntegerField(
+        unique=True,
+        null=True,
+        blank=True,
+        db_index=True,
+        help_text='Telegram foydalanuvchi ID (int)',
+    )
+
+

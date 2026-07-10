@@ -9,7 +9,7 @@ from typing import Any
 from django.http import HttpRequest, JsonResponse
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from apps.admin.models import AdminProfile, TestStatus, TestAnswers
+from apps.admin.models import TestStatus, TestAnswers
 
 logger = logging.getLogger(__name__)
 
@@ -150,16 +150,12 @@ def _build_answers_payload(answers_qs) -> dict:
     return out
 
 
-def is_admin(user):
-    """
-    True only if:
-      - authenticated
-      - is_staff
-      - has AdminProfile row
-    """
-    if not (user and user.is_authenticated and user.is_staff):
-        return False
-    return AdminProfile.objects.filter(user=user).exists()
+def is_admin(user) -> bool:
+    return (
+            user is not None
+            and user.is_authenticated
+            and user.role == "admin"
+    )
 
 
 def validate_test_code(test_code):

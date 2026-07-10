@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.admin.apps.AdminConfig',
     'apps.pupil',
+    'apps.teacher',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "admin_panel.User"
 
 # settings.py — bu qatorlarni QO'SHING (yoki mavjudlarini o'zgartiring)
 
