@@ -388,6 +388,7 @@ function updateProgress() {
 function collectAnswers() {
     const answers = {};
     const missing = [];
+    let essayBall = null;
 
     if (isSubjectMode) {
         const config = SUBJECT_CONFIG[SUBJECT];
@@ -402,11 +403,17 @@ function collectAnswers() {
                     }
                 } else if (section.type === "input-single") {
                     const inp = document.querySelector(`input[data-q="${i}"]`);
-                    const val = (inp?.value || "").trim().toLowerCase();
-                    if (val) {
-                        answers[i] = val;
+                    const val = (inp?.value || "").trim();
+
+                    if (section.highlight === true) {
+                        // ⬅️ Esse balli — alohida maydon, ixtiyoriy
+                        if (val) essayBall = val;
                     } else {
-                        missing.push(i);
+                        if (val) {
+                            answers[i] = val.toLowerCase();
+                        } else {
+                            missing.push(i);
+                        }
                     }
                 } else if (section.type === "input-ab") {
                     const inpA = document.querySelector(`input[data-q="${i}_a"]`);
@@ -465,7 +472,7 @@ function collectAnswers() {
         }
     }
 
-    return { answers, missing };
+    return { answers, missing, essayBall };
 }
 
 
@@ -483,7 +490,7 @@ saveBtn?.addEventListener("click", async () => {
         return;
     }
 
-    const { answers, missing } = collectAnswers();
+    const { answers, missing, essayBall } = collectAnswers();
 
     if (missing.length > 0) {
         const uniq = [...new Set(missing)];
@@ -504,21 +511,29 @@ saveBtn?.addEventListener("click", async () => {
                 test_code: testCodeInput.value.trim(),
                 telegram_id: telegramIdFromUrl,
                 answers: answers,
+                essay_ball: essayBall,
             }),
         });
 
         const data = await res.json();
 
         if (data.message === "success") {
-            localStorage.setItem("test_results", JSON.stringify(data.results));
-            localStorage.setItem("test_stats", JSON.stringify({
-                correct: data.correct,
-                wrong: data.wrong,
-                total: data.total,
-            }));
+        localStorage.setItem("test_results", JSON.stringify(data.results));
+        localStorage.setItem("test_stats", JSON.stringify({
+            correct: data.correct,
+            wrong: data.wrong,
+            total: data.total,
+        }));
 
-            window.location.href = `/pupil/results/?code=${encodeURIComponent(testCodeInput.value.trim())}`;
+        localStorage.setItem("test_subject", SUBJECT);
+        if (essayBall) {
+            localStorage.setItem("essay_ball", essayBall);
         } else {
+            localStorage.removeItem("essay_ball");
+        }
+
+        window.location.href = `/pupil/results/?code=${encodeURIComponent(testCodeInput.value.trim())}`;
+    } else {
             showStatus(data.error || "⚠️ Javoblarni tekshirishda xato", "danger");
         }
     } catch (err) {

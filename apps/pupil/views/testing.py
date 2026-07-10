@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
 
 from apps.admin.models import TestAnswers, TestStatus
-from apps.pupil.models import TestResult
+from apps.pupil.models import TestResult, RashResult, Pupil
 from apps.pupil.services.grading import grade_answers
 
 logger = logging.getLogger(__name__)
@@ -143,7 +143,8 @@ def check_answers(request: HttpRequest) -> JsonResponse:
     test_code = data.get("test_code")
     telegram_id = data.get("telegram_id")
     user_answers = data.get("answers", {})
-
+    essay_ball = data.get("essay_ball", None)
+    print(f"BU DATA: {data}")
     if not test_code or not telegram_id or not user_answers:
         return JsonResponse({"error": "Ma'lumot to'liq emas"}, status=400)
 
@@ -156,6 +157,8 @@ def check_answers(request: HttpRequest) -> JsonResponse:
         test_status = TestStatus.objects.get(test_code=test_code)
     except TestStatus.DoesNotExist:
         return JsonResponse({"error": "Bunday test topilmadi"}, status=404)
+
+    pupil = Pupil.objects.get(telegram_id=telegram_id)
 
     try:
         with transaction.atomic():
@@ -173,6 +176,11 @@ def check_answers(request: HttpRequest) -> JsonResponse:
 
             # DB'ga bir marta yozish
             TestResult.objects.bulk_create(result.bulk_records)
+            RashResult.objects.get_or_create(
+                pupil=pupil,
+                test=test_status,
+                essay_ball=essay_ball
+            )
 
     except Exception:
         logger.exception("check_answers failed for test_code=%s", test_code)

@@ -1,6 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
         const stats   = JSON.parse(localStorage.getItem('test_stats')   || '{}');
         const results = JSON.parse(localStorage.getItem('test_results') || '[]');
+        const subject   = localStorage.getItem('test_subject') || '';
+        const essayBall = localStorage.getItem('essay_ball')   || null;
 
         const total   = stats.total   || 0;
         const correct = stats.correct || 0;
@@ -132,6 +134,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
                 container.appendChild(div);
             });
+
+            // ⬅️ NEW: Ona tilida — esse balli eng oxirida
+            if (subject === 'uzbek' && essayBall) {
+                const div = document.createElement('div');
+                div.className = 'result-item essay-result';
+                div.style.animationDelay = `${Math.min(results.length * 0.015, 0.6)}s`;
+                div.innerHTML = `
+                    <div class="result-item-icon">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                    <div class="result-item-question">45.</div>
+                    <div class="result-item-answer" title="Esse balli: ${essayBall}">${essayBall}</div>
+                `;
+                container.appendChild(div);
+            }
+
+            // ⬅️ NEW: ustun bo'yicha to'ldirish (1-5 | 6-10 | ...)
+            requestAnimationFrame(() => {
+                const cs = getComputedStyle(container);
+                const cols = cs.gridTemplateColumns.split(' ').filter(Boolean).length || 2;
+                const rows = Math.ceil(container.children.length / cols);
+                container.style.gridAutoFlow = 'column';
+                container.style.gridTemplateRows = `repeat(${rows}, auto)`;
+            });
         }
 
         // =====================================================
@@ -151,6 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // =====================================================
         localStorage.removeItem('test_results');
         localStorage.removeItem('test_stats');
+        localStorage.removeItem('test_subject');
+        localStorage.removeItem('essay_ball');
     });
 
     // =====================================================
