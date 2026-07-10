@@ -165,11 +165,7 @@
         // =====================================================
         document.getElementById('close-btn')?.addEventListener('click', () => {
             window.tgHaptic?.medium?.();
-            if (window.Telegram?.WebApp) {
-                window.Telegram.WebApp.close();
-            } else {
-                window.location.href = '/';
-            }
+            window.location.href = '/pupil/home/';
         });
 
         // =====================================================

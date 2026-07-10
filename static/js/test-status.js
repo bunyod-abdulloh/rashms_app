@@ -1,3 +1,5 @@
+import { apiHeaders } from "./api.js";
+
 const CHECK_URL = '/pupil/api/test-status/';
 
 // =========================================================
@@ -68,8 +70,8 @@ document.getElementById('start-btn').addEventListener('click', async () => {
     try {
         const res = await fetch(CHECK_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ telegram_id, test_code: testCode })
+            headers: apiHeaders(),
+            body: JSON.stringify({ test_code: testCode })
         });
 
         const data = await res.json();

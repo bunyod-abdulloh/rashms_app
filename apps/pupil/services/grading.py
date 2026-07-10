@@ -33,6 +33,14 @@ def _question_sort_key(item: dict) -> tuple[int, float]:
         return (9999, 0.0)
 
 
+def _is_essay_question(q_num: str, subject: str) -> bool:
+    """Ona tilida 45-savol — esse balli, gradingdan chetlanadi."""
+    if subject != "uzbek":
+        return False
+    q_str = str(q_num)
+    return q_str == "45" or q_str.startswith("45.")
+
+
 def grade_answers(
         test_status: TestStatus,
         telegram_id: int,
@@ -49,6 +57,8 @@ def grade_answers(
     Returns:
         GradingResult obyekti — natijalar va bulk_create uchun record'lar.
     """
+    subject = getattr(test_status, "subject", "") or ""
+
     # To'g'ri javoblarni bir marta yuklash (lower-case)
     correct_map: dict[str, str] = {
         ans.question_number: ans.answer_text.lower()
@@ -57,9 +67,13 @@ def grade_answers(
         )
     }
 
-    result = GradingResult(total=len(correct_map))
+    result = GradingResult()
 
     for q_num, correct_ans in correct_map.items():
+        # ⬅️ Ona tilida 45-savolni butunlay tashlab ketamiz (esse — alohida)
+        if _is_essay_question(q_num, subject):
+            continue
+
         user_ans = str(user_answers.get(q_num, "")).lower().strip()
         is_correct = (correct_ans == user_ans)
 
@@ -80,6 +94,9 @@ def grade_answers(
             question_number=q_num,
             correct_answer=is_correct,
         ))
+
+    # Total endi hisoblanadi (esse chegirilgandan keyin)
+    result.total = result.correct + result.wrong
 
     # Savollarni to'g'ri tartibda saralash
     result.results.sort(key=_question_sort_key)

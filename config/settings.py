@@ -18,6 +18,8 @@ CSRF_TRUSTED_ORIGINS = os.getenv(
     ""
 ).split(",")
 
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,7 +45,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_ratelimit.middleware.RatelimitMiddleware",
 ]
+
+RATELIMIT_VIEW = "apps.pupil.services.security.ratelimited_view"
 
 ROOT_URLCONF = 'config.urls'
 
@@ -164,4 +169,26 @@ CSRF_COOKIE_SECURE = True  # ⚠️ Faqat HTTPS'da True
 SESSION_COOKIE_AGE = 60 * 60 * 8  # 8 soat
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
+
+if DEBUG:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "unique-snowflake",
+        }
+    }
+else:
+    redis_url = os.getenv("REDIS_URL", "").strip()
+    if not redis_url.startswith(("redis://", "rediss://", "unix://")):
+        redis_url = "redis://127.0.0.1:6379/1"
+
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": redis_url,
+            "OPTIONS": {
+                "protocol": 2,
+            },
+        }
+    }

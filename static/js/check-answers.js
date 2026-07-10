@@ -12,6 +12,8 @@
 //    .querySelector('meta[name="csrf-token"]')
 //    .getAttribute("content");
 
+import { apiHeaders } from "./api.js";
+
 const SUBJECT_CONFIG = {
     history: {
         name: "Tarix",
@@ -506,10 +508,9 @@ saveBtn?.addEventListener("click", async () => {
     try {
         const res = await fetch(API_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: apiHeaders(),
             body: JSON.stringify({
                 test_code: testCodeInput.value.trim(),
-                telegram_id: telegramIdFromUrl,
                 answers: answers,
                 essay_ball: essayBall,
             }),
