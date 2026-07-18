@@ -169,8 +169,6 @@ CSRF_COOKIE_SECURE = True  # ⚠️ Faqat HTTPS'da True
 SESSION_COOKIE_AGE = 60 * 60 * 8  # 8 soat
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-APP_VERSION = "1.0.1"
-
 if DEBUG:
     CACHES = {
         "default": {
@@ -192,3 +190,5 @@ else:
             },
         }
     }
+
+APP_VERSION = "1.0.2"

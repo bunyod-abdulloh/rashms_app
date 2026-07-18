@@ -5,11 +5,13 @@ const CHECK_URL = '/pupil/api/test-status/';
 // =========================================================
 // 🔔 TOAST HELPER — chiroyli xabar chiqarish
 // =========================================================
+const TOAST_DURATION = 10000; // 10 soniya
+let toastHideTimer = null; // avtomatik yopish uchun timer ID'sini saqlaymiz
+
 function showToast(message, type = 'danger', icon = null) {
     const statusMsg = document.getElementById('status-msg');
     if (!statusMsg) return;
 
-    // Default ikonkalar
     const defaultIcons = {
         danger:  'bi-x-octagon-fill',
         warning: 'bi-exclamation-triangle-fill',
@@ -18,14 +20,19 @@ function showToast(message, type = 'danger', icon = null) {
     };
     const iconClass = icon || defaultIcons[type] || defaultIcons.info;
 
-    // Eski toast'ni yumshoq olib tashlash
+    // Oldingi avtomatik-yopish timerini bekor qilamiz —
+    // aks holda eski toast'ning timeouti yangi toast'ni ham yopib yuboradi
+    if (toastHideTimer) {
+        clearTimeout(toastHideTimer);
+        toastHideTimer = null;
+    }
+
     const oldToast = statusMsg.querySelector('.toast-msg');
     if (oldToast) {
         oldToast.classList.add('leaving');
         setTimeout(() => oldToast.remove(), 300);
     }
 
-    // Yangi toast
     setTimeout(() => {
         statusMsg.innerHTML = `
             <div class="toast-msg ${type}">
@@ -36,15 +43,23 @@ function showToast(message, type = 'danger', icon = null) {
             </div>
         `;
 
-        // Haptic feedback (Telegram)
         if (window.tgHaptic) {
             if (type === 'danger')  window.tgHaptic.error?.();
             else if (type === 'warning') window.tgHaptic.warning?.();
             else if (type === 'success') window.tgHaptic.success?.();
         }
+
+        // 10 soniyadan keyin avtomatik yopish
+        toastHideTimer = setTimeout(() => {
+            const activeToast = statusMsg.querySelector('.toast-msg');
+            if (!activeToast) return;
+
+            activeToast.classList.add('leaving');
+            setTimeout(() => activeToast.remove(), 300);
+            toastHideTimer = null;
+        }, TOAST_DURATION);
     }, 100);
 }
-
 
 document.getElementById('start-btn').addEventListener('click', async () => {
     const testCode = document.getElementById('test-code').value.trim();
