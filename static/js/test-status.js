@@ -136,7 +136,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
 
                 default:
                     showToast(
-                        "Noma'lum xatolik yuz berdi",
+                        "Noma'lum xatolik yuz berdi!",
                         'danger',
                         'bi-exclamation-diamond-fill'
                     );
