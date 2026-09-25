@@ -17,7 +17,7 @@ from django.views.decorators.http import require_POST, require_GET
 from django_ratelimit.decorators import ratelimit
 
 from apps.admin.models import TestAnswers, TestStatus
-from apps.pupil.models import TestResult, RashResult, Pupil
+from apps.pupil.models import TestResult, RashResult, Pupil, Rasch_tmp
 from apps.pupil.services.grading import grade_answers
 from apps.pupil.services.security import (
     require_webapp_auth,
@@ -72,7 +72,7 @@ def test_status(request: HttpRequest) -> JsonResponse:
 
     test = TestStatus.objects.filter(test_code=test_code).first()
     if not test:
-        return JsonResponse({"status": "error"}, status=404)
+        return JsonResponse({"status": "Bunday test topilmadi!"}, status=404)
 
     # Muddati tugagan bo'lsa avtomatik o'chirish
     current_time = timezone.now().astimezone(TASHKENT_TZ)
@@ -186,8 +186,25 @@ def check_answers(request: HttpRequest) -> JsonResponse:
     # ============================================================
     # 3) BUSINESS LOGIC
     # ============================================================
+    ESSAY_MAX_BALL = 75
+
     subject = getattr(test_status, "subject", "") or ""
-    essay_ball_to_save = essay_ball if subject == "uzbek" else None
+
+    if subject == "uzbek":
+        if not essay_ball or not essay_ball.isdigit():
+            return JsonResponse(
+                {"error": "Esse ballini raqam bilan kiriting!"}, status=400
+            )
+        essay_ball_to_save = int(essay_ball)
+        if not 0 <= essay_ball_to_save <= ESSAY_MAX_BALL:
+            return JsonResponse(
+                {"error": f"Esse ball 0 dan {ESSAY_MAX_BALL} gacha bo'lishi kerak"},
+                status=400,
+            )
+    else:
+        essay_ball_to_save = None  # boshqa fanlarda kelgan qiymat e'tiborsiz
+
+    teacher = getattr(pupil, "teacher", None)
 
     try:
         with transaction.atomic():
@@ -203,10 +220,18 @@ def check_answers(request: HttpRequest) -> JsonResponse:
             result = grade_answers(test_status, telegram_id, user_answers)
 
             TestResult.objects.bulk_create(result.bulk_records)
-            RashResult.objects.get_or_create(
+            # RashResult.objects.get_or_create(
+            #     teacher=teacher,
+            #     pupil=pupil,
+            #     test=test_status,
+            #     defaults={"t2": essay_ball_to_save},
+            # )
+
+            Rasch_tmp.objects.create(
+                teacher=teacher,
                 pupil=pupil,
                 test=test_status,
-                defaults={"essay_ball": essay_ball_to_save},
+                essay_ball=essay_ball_to_save
             )
 
     except IntegrityError:

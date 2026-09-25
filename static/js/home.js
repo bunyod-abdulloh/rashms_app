@@ -19,3 +19,7 @@ window.setStartBtnLoading = (loading) => {
         startBtn.disabled = false;
     }
 };
+
+if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.BackButton.hide();
+}

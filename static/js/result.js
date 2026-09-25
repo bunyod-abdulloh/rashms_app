@@ -144,7 +144,7 @@
                     <div class="result-item-icon">
                         <i class="bi bi-pencil-square"></i>
                     </div>
-                    <div class="result-item-question">45.</div>
+                    <div class="result-item-question">Esse</div>
                     <div class="result-item-answer" title="Esse balli: ${essayBall}">${essayBall}</div>
                 `;
                 container.appendChild(div);

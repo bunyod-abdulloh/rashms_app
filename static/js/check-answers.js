@@ -111,6 +111,9 @@ function createSingleInputBlock(i, placeholder = "Javobingizni kiriting", isEssa
     block.dataset.question = i;
 
     const label = isEssay ? "Esse" : "Javob";
+    const numericAttrs = isEssay
+        ? 'inputmode="numeric" pattern="[0-9]*" maxlength="3"'
+        : '';
 
     block.innerHTML = `
         <div class="q-header">
@@ -121,7 +124,8 @@ function createSingleInputBlock(i, placeholder = "Javobingizni kiriting", isEssa
                class="form-control answer-input"
                data-q="${i}"
                placeholder="${placeholder}"
-               autocomplete="off">
+               autocomplete="off"
+               ${numericAttrs}>
     `;
 
     questionsContainer.appendChild(block);
@@ -391,6 +395,7 @@ function collectAnswers() {
     const answers = {};
     const missing = [];
     let essayBall = null;
+    let essayInvalid = false;
 
     if (isSubjectMode) {
         const config = SUBJECT_CONFIG[SUBJECT];
@@ -408,14 +413,16 @@ function collectAnswers() {
                     const val = (inp?.value || "").trim();
 
                     if (section.highlight === true) {
-                        // ⬅️ Esse balli — alohida maydon, ixtiyoriy
-                        if (val) essayBall = val;
-                    } else {
-                        if (val) {
-                            answers[i] = val.toLowerCase();
-                        } else {
+                        if (!val) {
                             missing.push(i);
+                        } else if (!/^\d+$/.test(val)) {
+                            essayInvalid = true;
+                        } else {
+                            essayBall = val;
                         }
+                    } else {
+                        if (val) answers[i] = val.toLowerCase();
+                        else missing.push(i);
                     }
                 } else if (section.type === "input-ab") {
                     const inpA = document.querySelector(`input[data-q="${i}_a"]`);
@@ -474,7 +481,7 @@ function collectAnswers() {
         }
     }
 
-    return { answers, missing, essayBall };
+    return { answers, missing, essayBall, essayInvalid };
 }
 
 
@@ -492,7 +499,12 @@ saveBtn?.addEventListener("click", async () => {
         return;
     }
 
-    const { answers, missing, essayBall } = collectAnswers();
+    const { answers, missing, essayBall, essayInvalid } = collectAnswers();
+
+    if (essayInvalid) {
+        showStatus("⚠️ Esse ballini faqat raqam bilan kiriting!", "warning");
+        return;
+    }
 
     if (missing.length > 0) {
         const uniq = [...new Set(missing)];
@@ -568,6 +580,8 @@ function showStatus(msg, type) {
 // =========================================================
 // 📱 TELEGRAM WEB APP
 // =========================================================
+const homeUrl = document.body.dataset.homeUrl;
+
 if (window.Telegram?.WebApp) {
     const tg = window.Telegram.WebApp;
     tg.ready();
@@ -575,8 +589,13 @@ if (window.Telegram?.WebApp) {
     try {
         tg.setHeaderColor('#6366f1');
     } catch (e) {}
-}
 
+    // Back button — home.html'ga qaytish
+    tg.BackButton.show();
+    tg.BackButton.onClick(() => {
+        window.location.href = homeUrl; // o'z URL'ingizga moslang
+    });
+}
 
 // =========================================================
 // ⚡ EVENTS + INIT
@@ -584,5 +603,9 @@ if (window.Telegram?.WebApp) {
 document.addEventListener('change', updateProgress);
 document.addEventListener('input',  updateProgress);
 
-// Sahifa yuklanganda testni render qilamiz
-renderTest();
+try {
+    renderTest();
+} catch (err) {
+    console.error("renderTest failed:", err);
+    showStatus("❌ Sahifani yuklashda xatolik", "danger");
+}

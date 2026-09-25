@@ -4,6 +4,8 @@ from apps.pupil.views import home_page, check_answers_page
 from apps.pupil.views.home_result import results_page
 from apps.pupil.views.testing import test_status, check_answers
 
+app_name = "pupil"
+
 urlpatterns = [
     path('home/', home_page, name='home'),
     path('check-answers-page/', check_answers_page, name='check-answers-page'),

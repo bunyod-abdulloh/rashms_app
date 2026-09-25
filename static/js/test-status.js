@@ -135,7 +135,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
                     break;
             }
         } else {
-            statusMsg.textContent = "❌ Xatolik: " + (data.message || "Nomaʼlum sabab");
+            statusMsg.textContent = "❌ Xatolik: " + (data.status || "Nomaʼlum sabab");
             statusMsg.className = "text-danger fw-semibold";
         }
     } catch (err) {

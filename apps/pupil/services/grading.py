@@ -20,17 +20,17 @@ class GradingResult:
     bulk_records: list[TestResult] = field(default_factory=list)
 
 
-def _question_sort_key(item: dict) -> tuple[int, float]:
-    """Savol raqamlarini to'g'ri tartibda saralash.
-    "1", "2", "41.a", "41.b" kabi qiymatlarni qo'llab-quvvatlaydi.
+def _question_sort_key(item: dict) -> tuple[int, str]:
     """
-    try:
-        parts = str(item["question"]).split(".")
-        major = int(parts[0])
-        minor = float("0." + parts[1]) if len(parts) > 1 else 0.0
-        return (major, minor)
-    except (ValueError, KeyError, IndexError):
-        return (9999, 0.0)
+    "question" maydonini tartib uchun (raqam, harf) juftligiga aylantiradi.
+    Masalan: "1" -> (1, ""), "41.a" -> (41, "a"), "41.b" -> (41, "b")
+    """
+    q = item["question"]
+    if "." in q:
+        num_part, letter_part = q.split(".", 1)
+    else:
+        num_part, letter_part = q, ""
+    return int(num_part), letter_part
 
 
 def _is_essay_question(q_num: str, subject: str) -> bool:
