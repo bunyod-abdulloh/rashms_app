@@ -126,6 +126,14 @@ document.getElementById('start-btn').addEventListener('click', async () => {
                     }, 600);
                     break;
 
+                case 'not_test':
+                    showToast(
+                        "Bunday test mavjud emas!",
+                        'danger',
+                        'bi-exclamation-diamond-fill'
+                    );
+                    break;
+
                 default:
                     showToast(
                         "Noma'lum xatolik yuz berdi",
