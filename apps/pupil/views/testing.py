@@ -68,11 +68,11 @@ def test_status(request: HttpRequest) -> JsonResponse:
     test_code = validate_test_code(data.get("test_code"))
 
     if not test_code:
-        return JsonResponse({"status": "not_test"}, status=400)
+        return JsonResponse({"status": "not_test"}, status=200)
 
     test = TestStatus.objects.filter(test_code=test_code).first()
     if not test:
-        return JsonResponse({"status": "not_test"}, status=404)
+        return JsonResponse({"status": "not_test"}, status=200)
 
     # Muddati tugagan bo'lsa avtomatik o'chirish
     current_time = timezone.now().astimezone(TASHKENT_TZ)
