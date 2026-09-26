@@ -192,3 +192,5 @@ else:
     }
 
 APP_VERSION = "1.0.4"
+
+RATELIMIT_IP_META_KEY = "HTTP_X_REAL_IP"

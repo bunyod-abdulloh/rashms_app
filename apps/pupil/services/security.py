@@ -14,6 +14,9 @@ from urllib.parse import parse_qsl
 from django.conf import settings
 from django.http import JsonResponse
 
+from django_ratelimit.exceptions import Ratelimited
+
+
 logger = logging.getLogger(__name__)
 
 # ============================================================
@@ -183,8 +186,5 @@ def validate_essay_ball(value: Any) -> str | None:
 # ============================================================
 # ⚠️ RATE LIMIT HANDLER
 # ============================================================
-def ratelimited_view(request, exception):
-    """django-ratelimit RATELIMIT_VIEW handleri."""
-    return JsonResponse(
-        {"error": "Juda ko'p so'rov, biroz kuting"}, status=429
-    )
+def ratelimit_exceeded_json(request, exception):
+    return JsonResponse({"status": "too_many_requests"}, status=429)
