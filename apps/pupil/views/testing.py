@@ -85,6 +85,12 @@ def test_status(request: HttpRequest) -> JsonResponse:
             return JsonResponse({"status": "closed"}, status=200)
         return JsonResponse({"status": "not_start"}, status=200)
 
+    paid = Pupil.objects.filter(telegram_id=telegram_id).first()
+
+    # if not paid or not paid.is_paid:
+    #     return JsonResponse({"status": "not_paid"}, status=200)
+
+
     user_done = TestResult.objects.filter(
         telegram_id=telegram_id, test_code=test
     ).exists()

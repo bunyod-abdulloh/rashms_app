@@ -134,6 +134,15 @@ document.getElementById('start-btn').addEventListener('click', async () => {
                     );
                     break;
 
+                case 'not_paid':
+                    showToast(
+                        "Siz to'lovni amalga oshirmagansiz! Iltimos botdagi To'lov qismiga kirib to'lovni " +
+                        "amalga oshiring!",
+                        'danger',
+                        'bi-exclamation-diamond-fill'
+                    );
+                    break;
+
                 default:
                     showToast(
                         "Noma'lum xatolik yuz berdi!",
