@@ -11,8 +11,8 @@ class TestStatusAdmin(admin.ModelAdmin):
 
 @admin.register(TestAnswers)
 class TestAnswersAdmin(admin.ModelAdmin):
-    list_display = ('test_code', 'question_number', 'answer_text',)
-    list_filter = ('test_code',)
+    list_display = ('test_code__test_code', 'question_number', 'answer_text',)
+    list_filter = ('test_code__test_code',)
 
 
 @admin.register(User)
