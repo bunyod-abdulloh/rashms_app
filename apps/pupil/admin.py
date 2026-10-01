@@ -11,8 +11,8 @@ class PupilAdmin(admin.ModelAdmin):
 
 @admin.register(TestResult)
 class TestResultAdmin(admin.ModelAdmin):
-    list_display = ('test_code', 'question_number', 'correct_answer', 'telegram_id',)
-    list_filter = ('test_code', 'telegram_id',)
+    list_display = ('test_code__test_code', 'question_number', 'correct_answer', 'telegram_id',)
+    list_filter = ('test_code__test_code', 'telegram_id',)
 
 
 @admin.register(RashResult)
