@@ -28,7 +28,7 @@ class TestStatus(models.Model):
     off_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.test_code
+        return f"{self.test_code} - {self.subject} - {self.is_active} - {self.off_time}"
 
 
 class TestAnswers(models.Model):
@@ -39,6 +39,9 @@ class TestAnswers(models.Model):
     question_number = models.CharField(max_length=10)
     answer_text = models.TextField()
     score = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.test_code} - {self.question_number} - {self.answer_text}"
 
 
 class User(AbstractUser):
@@ -61,4 +64,5 @@ class User(AbstractUser):
         help_text='Telegram foydalanuvchi ID (int)',
     )
 
-
+    def __str__(self):
+        return f"{self.role} - {self.telegram_id}"
