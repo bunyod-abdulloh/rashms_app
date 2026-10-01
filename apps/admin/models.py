@@ -2,9 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-
-
-
 class TestStatus(models.Model):
     """
     Har bir test uchun umumiy holat (faolmi yoki yo‘qmi)
@@ -27,9 +24,6 @@ class TestStatus(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     off_time = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.test_code} - {self.subject} - {self.is_active} - {self.off_time}"
-
 
 class TestAnswers(models.Model):
     """
@@ -39,9 +33,6 @@ class TestAnswers(models.Model):
     question_number = models.CharField(max_length=10)
     answer_text = models.TextField()
     score = models.FloatField(default=0.0)
-
-    def __str__(self):
-        return f"{self.test_code} - {self.question_number} - {self.answer_text}"
 
 
 class User(AbstractUser):
@@ -63,6 +54,3 @@ class User(AbstractUser):
         db_index=True,
         help_text='Telegram foydalanuvchi ID (int)',
     )
-
-    def __str__(self):
-        return f"{self.role} - {self.telegram_id}"

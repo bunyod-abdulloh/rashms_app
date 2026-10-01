@@ -18,9 +18,6 @@ class Pupil(models.Model):
         db_table = 'users'
         managed = False
 
-    def __str__(self):
-        return f"{self.full_name} | {self.teacher} | {self.is_paid}"
-
 
 class TestResult(models.Model):
     telegram_id = models.BigIntegerField()
@@ -28,9 +25,6 @@ class TestResult(models.Model):
     question_number = models.CharField(max_length=10)
     correct_answer = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.test_code} - {self.question_number} | {self.correct_answer}"
 
 
 class RashResult(models.Model):
@@ -57,9 +51,6 @@ class RashResult(models.Model):
     class Meta:
         db_table = 'rash_results'
         managed = False
-
-    def __str__(self):
-        return f"{self.teacher} - {self.pupil} | {self.test} | {self.grade}"
 
 
 class Rasch_tmp(models.Model):
@@ -88,6 +79,3 @@ class Rasch_tmp(models.Model):
     class Meta:
         db_table = 'rasch_tmp'
         managed = False
-
-    def __str__(self):
-        return f"{self.teacher} - {self.pupil} | {self.test} | {self.essay_ball}"
