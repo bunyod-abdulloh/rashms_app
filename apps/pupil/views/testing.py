@@ -17,7 +17,7 @@ from django.views.decorators.http import require_POST, require_GET
 from django_ratelimit.decorators import ratelimit
 
 from apps.admin.models import TestAnswers, TestStatus
-from apps.pupil.models import TestResult, RashResult, Pupil, Rasch_tmp
+from apps.pupil.models import TestResult, Pupil, Rasch_tmp
 from apps.pupil.services.grading import grade_answers
 from apps.pupil.services.security import (
     require_webapp_auth,
@@ -45,10 +45,6 @@ def _parse_json(request: HttpRequest):
         return json.loads(request.body), None
     except json.JSONDecodeError:
         return None, JsonResponse({"error": "JSON format xato"}, status=400)
-
-
-# Generic xato javobi — enumeratsiyani oldini olish uchun
-_BAD_REQUEST = JsonResponse({"error": "Ma'lumot noto'g'ri"}, status=400)
 
 
 # ============================================================
@@ -170,8 +166,11 @@ def check_answers(request: HttpRequest) -> JsonResponse:
     user_answers = validate_answers(data.get("answers"))
     essay_ball = validate_essay_ball(data.get("essay_ball"))
 
-    if not test_code or not user_answers:
-        return _BAD_REQUEST
+    if not test_code:
+        return JsonResponse({"error": "Bunday test mavjud emas!"}, status=400)
+
+    if not user_answers:
+        return JsonResponse({"error": "Error! Not user_answers"}, status=400)
 
     # ============================================================
     # 2) DB QIDIRUV — generic xato ma'lumot sizishini oldini oladi
@@ -179,15 +178,21 @@ def check_answers(request: HttpRequest) -> JsonResponse:
     try:
         test_status = TestStatus.objects.get(test_code=test_code)
     except TestStatus.DoesNotExist:
-        return _BAD_REQUEST
+        return JsonResponse(
+            {"error": "Bunday test kodi mavjud emas!"}, status=400
+        )
 
     if not test_status.is_active:
-        return _BAD_REQUEST
+        return JsonResponse(
+            {"error": "Ushbu test faol emas!"}, status=400
+        )
 
     try:
         pupil = Pupil.objects.get(telegram_id=telegram_id)
     except Pupil.DoesNotExist:
-        return _BAD_REQUEST
+        return JsonResponse(
+            {"error": "Iltimos, botga qaytadan /start bosib ro'yxatdan o'ting!"}, status=400
+        )
 
     # ============================================================
     # 3) BUSINESS LOGIC
