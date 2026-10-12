@@ -24,6 +24,9 @@ class TestStatus(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     off_time = models.DateTimeField(null=True, blank=True)
 
+    def __str__(self):
+        return self.test_code
+
 
 class TestAnswers(models.Model):
     """
